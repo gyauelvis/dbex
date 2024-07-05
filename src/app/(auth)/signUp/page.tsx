@@ -3,12 +3,9 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
+import Link from "next/link";
 
-import {
-    Github01Icon,
-} from "hugeicons-react"
 
-import { GoogleIcon } from "@/components/icons/GoogleIcon"
 import {
     Mail01Icon as Mail,
     SquareLock02Icon as Lock
@@ -24,6 +21,8 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { SignInWithGithub, SignInWithGoogle } from "@/components/auth/SignInWithGoogleGithub";
+
 
 const signInFormSchema = z.object({
     email: z.string().email({
@@ -56,13 +55,13 @@ export default function SignUpPage() {
         console.log(values)
     }
     return (
-        <div className="flex flex-row justify-center items-center min-h-screen">
+        <div className="flex flex-row justify-center items-center min-h-screen font-sans">
             <div className="form-wrapper w-96 rounded-lg border p-3 shadow-2xl">
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                         <div className="flex flex-col justify-center items-center gap-2">
                             <h1 className="text-3xl font-bold">Create Account</h1>
-                            <div className="text-sm"> <span className="text-muted-foreground">Already have an account? </span><a href="#" className="underline">Sign In</a></div>
+                            <div className="text-sm"> <span className="text-muted-foreground">Already have an account? </span><Link href="/signIn" className="underline">Sign In</Link></div>
                         </div>
                         <FormField
                             control={form.control}
@@ -116,13 +115,9 @@ export default function SignUpPage() {
                         <div className="flex flex-row justify-center items-center">
                             <span className="text-sm capitalize">Or Continue With</span>
                         </div>
-                        <div className="signInWithGoogleAndGitHub flex gap-5">
-                            <Button className="w-full dark:bg-secondary dark:hover:bg-secondary-foreground dark:text-secondary-foreground dark:hover:text-secondary">
-                                <GoogleIcon size="28"></GoogleIcon>
-                            </Button>
-                            <Button className="w-full dark:bg-secondary dark:hover:bg-secondary-foreground dark:text-secondary-foreground dark:hover:text-secondary">
-                                <Github01Icon size={28} className=""></Github01Icon>
-                            </Button>
+                        <div className="flex gap-5">
+                            <SignInWithGoogle/>
+                            <SignInWithGithub/>
                         </div>
                     </form>
                 </Form>
