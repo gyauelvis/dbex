@@ -13,7 +13,7 @@ import {
 import React from 'react';
 import { Badge } from '@/components/ui/badge'
 import { Connection } from '@prisma/client/edge';
-import { Lock as LockIcon, User as UserIcon } from '@phosphor-icons/react/dist/ssr';
+// import { Lock as LockIcon, User as UserIcon } from '@phosphor-icons/react/dist/ssr';
 import { PostgresIcon } from "./icons";
 import Link from "next/link";
 import {

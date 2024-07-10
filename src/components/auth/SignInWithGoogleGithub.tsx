@@ -1,14 +1,18 @@
-import { signIn } from "@/auth"
+import { providerMap } from "@/auth"
+import { authSignIn } from "@/lib/actions"
 import {
     Github01Icon,
 } from "hugeicons-react"
 
 import { GoogleIcon } from "@/components/icons/GoogleIcon"
-import { Button } from "@/components/ui/button" 
+import { Button } from "@/components/ui/button"
 
 export function SignInWithGoogle() {
     return (
-        <Button onClick={() => signIn('google')} className="w-full dark:bg-secondary dark:hover:bg-secondary-foreground dark:text-secondary-foreground dark:hover:text-secondary">
+        <Button onClick={async () => {
+            await authSignIn(providerMap[1])
+        }}
+            className="w-full dark:bg-secondary dark:hover:bg-secondary-foreground dark:text-secondary-foreground dark:hover:text-secondary">
             <GoogleIcon size="28"></GoogleIcon>
         </Button>
     )
@@ -16,7 +20,9 @@ export function SignInWithGoogle() {
 
 export function SignInWithGithub() {
     return (
-        <Button onClick={() => signIn('github')} className="w-full dark:bg-secondary dark:hover:bg-secondary-foreground dark:text-secondary-foreground dark:hover:text-secondary">
+        <Button onClick={async () => {
+            await authSignIn(providerMap[0])
+        }} className="w-full dark:bg-secondary dark:hover:bg-secondary-foreground dark:text-secondary-foreground dark:hover:text-secondary">
             <Github01Icon size={28} className=""></Github01Icon>
         </Button>
     )

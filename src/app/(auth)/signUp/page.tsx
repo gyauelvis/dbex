@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import Link from "next/link";
 
-
 import {
     Mail01Icon as Mail,
     SquareLock02Icon as Lock
@@ -22,7 +21,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { SignInWithGithub, SignInWithGoogle } from "@/components/auth/SignInWithGoogleGithub";
-
+import { registerUser } from "@/registerUser"
 
 const signInFormSchema = z.object({
     email: z.string().email({
@@ -51,8 +50,9 @@ export default function SignUpPage() {
         },
     })
 
-    const onSubmit = (values: z.infer<typeof signInFormSchema>) => {
-        console.log(values)
+    const onSubmit = async(values: z.infer<typeof signInFormSchema>) => {
+        const registerNewUser = await registerUser(values.email, values.password);
+        console.log(registerNewUser)
     }
     return (
         <div className="flex flex-row justify-center items-center min-h-screen font-sans">

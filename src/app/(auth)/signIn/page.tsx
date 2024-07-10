@@ -3,11 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import {
-    Github01Icon,
-} from "hugeicons-react"
 
-import { GoogleIcon } from "@/components/icons/GoogleIcon"
 import {
     Mail01Icon as Mail,
     SquareLock02Icon as Lock
@@ -24,6 +20,12 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
+
+import { SignInWithGithub, SignInWithGoogle } from "@/components/auth/SignInWithGoogleGithub";
+import { signUserIn, authSignIn } from "@/lib/actions"
+import { signIn, providerMap } from "@/auth"
+
+
 
 const signInFormSchema = z.object({
     email: z.string().email({
@@ -47,14 +49,22 @@ export default function SignUpPage() {
         },
     })
 
-    const onSubmit = (values: z.infer<typeof signInFormSchema>) => {
-        console.log(values)
+    const onSubmit = async (values: z.infer<typeof signInFormSchema>) => {
+        console.log("entered onSubmit")
+        const { email, password } = values as {
+            email: string;
+            password: string;
+        };
+        console.log(email, password);
+        await signUserIn({ email, password })
     }
+
+
     return (
         <div className="flex flex-row justify-center items-center min-h-screen font-sans">
             <div className="form-wrapper w-96 rounded-lg border p-3 shadow-2xl">
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4" >
                         <div className="flex flex-col justify-center items-center gap-2">
                             <h1 className="text-3xl font-bold">Sign In</h1>
                             <div className="text-sm"> <span className="text-muted-foreground">Already have an account? </span><Link href="/signUp" className="underline">Sign Up</Link></div>
@@ -96,12 +106,8 @@ export default function SignUpPage() {
                             <span className="text-sm capitalize">Or Continue With</span>
                         </div>
                         <div className="signInWithGoogleAndGitHub flex gap-5">
-                            <Button className="w-full dark:bg-secondary dark:hover:bg-secondary-foreground dark:text-secondary-foreground dark:hover:text-secondary">
-                                <GoogleIcon size="28"></GoogleIcon>
-                            </Button>
-                            <Button className="w-full dark:bg-secondary dark:hover:bg-secondary-foreground dark:text-secondary-foreground dark:hover:text-secondary">
-                                <Github01Icon size={28} className=""></Github01Icon>
-                            </Button>
+                            <SignInWithGoogle />
+                            <SignInWithGithub />
                         </div>
                     </form>
                 </Form>

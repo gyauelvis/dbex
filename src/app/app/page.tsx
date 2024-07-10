@@ -44,6 +44,7 @@ import {
   MagnifyingGlass as MagnifyingGlassIcon,
   DotsThree as DotsThreeIcon,
 } from "@phosphor-icons/react";
+
 import { SignIn } from "@/components/auth/client";
 import { signOut, signIn, useSession } from "next-auth/react";
 
