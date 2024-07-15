@@ -63,6 +63,23 @@ export const createNewUser = async (
   }
 };
 
+export const createSession = async (userId: string): Promise<boolean> => {
+  noStore();
+  try {
+    console.log(`Creating session for user with id: ${userId}`);
+    await prisma.session.create({
+      data: {
+        userId: userId,
+        expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+      },
+    });
+    return true;
+  } catch (error) {
+    console.error("Error creating session:", error);
+    return false;
+  }
+};
+
 export const findUniqueUser = async (email: string) => {
   noStore();
   const user = await prisma.user.findUnique({
@@ -76,22 +93,36 @@ export const findUniqueUser = async (email: string) => {
 export const signUserIn = async ({
   email,
   password,
+  csrfToken,
 }: {
   email: string;
   password: string;
+  csrfToken: string | null;
 }) => {
-  console.log(`signing ${email}`);
+  console.log(`Signing in user: ${email} with CSRF token: ${csrfToken}`);
   try {
     const result = await signIn("credentials", {
       redirect: false,
-      email: email,
-      password: password,
+      email,
+      password,
+      csrfToken,
     });
 
-    if (result.error) console.error(result.error);
-    else console.log("Signed in successfully");
+    console.log("Sign-in result:", result);
+
+    if (typeof result === 'string') {
+      console.log("Sign-in successful, redirect URL:", result);
+      return { success: true, url: result };
+    } else if (result?.error) {
+      console.error("Sign-in failed:", result.error);
+      return { success: false, error: result.error };
+    } else {
+      console.error("Unexpected sign-in result:", result);
+      return { success: false, error: 'Unexpected sign-in result' };
+    }
   } catch (error) {
     console.error("Error signing in:", error);
+    return { success: false, error: 'An unexpected error occurred' };
   }
 };
 

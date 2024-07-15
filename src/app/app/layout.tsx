@@ -18,6 +18,7 @@ export default async function Home({
   const defaultCollapsed = collapsed ? JSON.parse(collapsed.value) : false
 
   const session = await auth()
+  console.log(session)
 
   if ( !session ) {
     return (

@@ -56,6 +56,7 @@ export default function Home() {
   const [isCollapsed, setIsCollapsed] = React.useState<boolean>(defaultCollapsed);
 
   const { data } = useSession()
+  console.log(data);
 
   if ( !data?.user ) {
     return (
