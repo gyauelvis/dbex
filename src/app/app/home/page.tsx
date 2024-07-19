@@ -13,7 +13,7 @@ import {
 
 import { Code2 as Code } from 'lucide-react';
 
-import { RecentQueries, AnalyticsComponent } from '@/components/home-page';
+import { RecentQueries, AnalyticsComponent, FeedbakCard } from '@/components/home-page';
 
 import {
   DatabaseIcon,
@@ -84,23 +84,9 @@ const Page = () => {
           </Card>
           <ChartComponent />
         </div>
-        <div className="w-full gap-5 relative grid grid-cols-12">
-          <Card className='flex flex-row col-span-7 lg:col-span-5 gap-4 shadow border rounded-lg py-4 px-5 relative overflow-y-scroll'>
-            <div className="flex flex-col justify-between gap-3 w-full">
-              <div className='flex gap-3 flex-col'>
-                <div className="icon bg-secondary w-fit p-3 rounded-lg">
-                  <TerminalWindowIcon className="size-4 text-primaryblue" />
-                </div>
-                <CardTitle className='text-lg'>
-                  Recent Queries
-                </CardTitle>
-              </div>
 
-              <div className='flex flex-col lg:h-[10rem] lg:overflow-y-scroll'>
-                <RecentQueries />
-              </div>
-            </div>
-          </Card>
+        <div className="w-full gap-5 relative grid grid-cols-12">
+          
           <Card className='shadow border grid col-span-5 lg:col-span-3 h-full bg-patternImag bg-bottom  rounded-lg py-4 px-5 relative'>
             <div className="flex justify-between flex-col gap-3">
               <div className='flex gap-3 flex-col items-center justify-center'>
@@ -118,6 +104,26 @@ const Page = () => {
 
             </div>
           </Card>
+
+          <FeedbakCard></FeedbakCard>
+
+          <Card className='flex flex-row col-span-7 lg:col-span-5 gap-4 shadow border rounded-lg py-4 px-5 relative overflow-y-scroll'>
+            <div className="flex flex-col justify-between gap-3 w-full">
+              <div className='flex gap-3 flex-col'>
+                <div className="icon bg-secondary w-fit p-3 rounded-lg">
+                  <TerminalWindowIcon className="size-4 text-primaryblue" />
+                </div>
+                <CardTitle className='text-lg'>
+                  Recent Queries
+                </CardTitle>
+              </div>
+
+              <div className='flex flex-col lg:h-[10rem] lg:overflow-y-scroll'>
+                <RecentQueries />
+              </div>
+            </div>
+          </Card>
+          
         </div>
       </div>
 

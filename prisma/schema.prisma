@@ -88,7 +88,6 @@ model Query {
   emojiUrl     String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @default(now())
-
   user              User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   relatedConnection Connection @relation(fields: [connectionId], references: [id], onDelete: Cascade)
 

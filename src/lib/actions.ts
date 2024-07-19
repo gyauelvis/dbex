@@ -104,3 +104,10 @@ export const deleteConnection = async (id: string) : Promise<Connection> => { //
   })
   return deletedConnection
 }
+
+export const Analytics = async () => {
+  const queries = await prisma.query.count();
+  const connection = await prisma.connection.count();
+  
+  return { queries, connection }
+}

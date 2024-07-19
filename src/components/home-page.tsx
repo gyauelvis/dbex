@@ -1,4 +1,9 @@
-import { TerminalWindowIcon, TableIcon, ServerIcon } from "./icons";
+import { TerminalWindowIcon, TableIcon, ServerIcon, FeedbackIcon } from "./icons";
+import {
+    Card,
+    CardDescription,
+    CardTitle,
+} from "@/components/ui/card"
 
 export const RecentQueries = () => {
 
@@ -94,5 +99,27 @@ export const AnalyticsComponent = () => {
             }
         </>
 
+    )
+}
+
+export const FeedbakCard = () => {
+    return (
+        <Card className='shadow border grid col-span-5 lg:col-span-3 h-full bg-patternImag bg-bottom  rounded-lg py-4 px-5 relative'>
+            <div className="flex justify-between flex-col gap-3">
+                <div className='flex gap-3 flex-col items-center justify-center'>
+                    <div className="icon bg-secondary w-fit p-3 rounded-lg">
+                        <FeedbackIcon className="size-4 text-primaryblue" />
+                    </div>
+                    <div className="flex flex-col gap-1 items-center justify-center text-center">
+                        <CardTitle className='text-lg'>Database</CardTitle>
+                        <CardDescription className='w-12/12'>
+                            Postgres database the world&apos;s most trusted relational database.
+                        </CardDescription>
+
+                    </div>
+                </div>
+
+            </div>
+        </Card>
     )
 }
