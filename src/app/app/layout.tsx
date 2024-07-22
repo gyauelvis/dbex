@@ -4,6 +4,7 @@ import { SignIn } from "@/components/auth/server";
 import MainNav from "@/components/layout/main-nav";
 import AppLayout from "@/components/layout/app-layout";
 import { ResizableHandle } from "@/components/ui/resizable";
+import { createClient } from "../../../utils/supabase/server";
 
 
 export default async function Home({
@@ -19,8 +20,12 @@ export default async function Home({
   const defaultCollapsed = collapsed ? JSON.parse(collapsed.value) : false
 
   const session = await auth()
+  const supabase = createClient()
 
-   if ( session ) {
+  const authData = await supabase.auth.getUser()
+
+
+   if ( !session && !authData) {
     return (
        <div className='grid size-full h-screen place-items-center gap-4'>
         <div className="gap-2 grid grid-flow-row h-fit">

@@ -46,17 +46,18 @@ import {
 } from "@phosphor-icons/react";
 import { SignIn } from "@/components/auth/client";
 import { signOut, signIn, useSession } from "next-auth/react";
+import { createClient } from "../../../utils/supabase/client";
 
-
-export default function Home() {
+export default async function Home() {
   const defaultCollapsed = false;
   const defaultLayout = [17, 23, 60];
   const navCollapsedSize = 4;
   const [isCollapsed, setIsCollapsed] = React.useState<boolean>(defaultCollapsed);
 
   const { data } = useSession()
-
-  if ( !data?.user ) {
+  const supabase = createClient()
+  const authData = await supabase.auth.getUser()
+  if (!data?.user && !authData?.data.user) {
     return (
       <>
         <p>You are not authorized to access this page</p>
@@ -93,7 +94,7 @@ export default function Home() {
             className={cn(
               "flex flex-col",
               isCollapsed &&
-                "min-w-[50px] transition-all duration-300 ease-in-out",
+              "min-w-[50px] transition-all duration-300 ease-in-out",
             )}
           >
             <div className="p-2 grid">
@@ -112,36 +113,36 @@ export default function Home() {
             <Separator />
             <div className="grid">
               {data?.user ?
-              <div className="w-full">
-                <DropdownMenu>
-                  <DropdownMenuTrigger className="w-full p-2">
-                    <Button size="default" variant={'ghost'} className="flex px-1 w-full justify-between  h-10">
-                      <div className="flex gap-2 items-center">
-                        <Avatar className="border">
-                          <AvatarImage src={data?.user.image || 'jude.png'} alt="@shadcn" />
-                          <AvatarFallback>JB</AvatarFallback>
-                        </Avatar>
-                        <div className="grow pt-0.5">
-                          <p className="text-sm truncate">{data?.user.name}</p>
+                <div className="w-full">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger className="w-full p-2">
+                      <Button size="default" variant={'ghost'} className="flex px-1 w-full justify-between  h-10">
+                        <div className="flex gap-2 items-center">
+                          <Avatar className="border">
+                            <AvatarImage src={data?.user.image || 'jude.png'} alt="@shadcn" />
+                            <AvatarFallback>JB</AvatarFallback>
+                          </Avatar>
+                          <div className="grow pt-0.5">
+                            <p className="text-sm truncate">{data?.user.name || authData.data.user?.email?.split('@')[0]}</p>
+                          </div>
                         </div>
-                      </div>
-                      <DotsThreeIcon className="size-5" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-full min-w-56">
-                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                    <DropdownMenuItem>Profile</DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem className="p-0 grid">
-                      <Button
-                        variant={'ghost'}
-                        className="p-0 px-1.5 flex justify-start font-normal"
-                        onClick={() => signOut()}>Sign Out</Button>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-              :
+                        <DotsThreeIcon className="size-5" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-full min-w-56">
+                      <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                      <DropdownMenuItem>Profile</DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem className="p-0 grid">
+                        <Button
+                          variant={'ghost'}
+                          className="p-0 px-1.5 flex justify-start font-normal"
+                          onClick={() => signOut()}>Sign Out</Button>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+                :
                 <Button
                   variant={'ghost'}
                   className="p-0 px-1.5 flex justify-start font-normal"
@@ -184,7 +185,7 @@ export default function Home() {
                         <span className="text-sm font-semibold">product_data</span>
                         <div className="flex w-full pr-2 justify-between items-center text-xs font-normal">
                           <div className="flex gap-2 items-center">
-                            <div className="size-2 bg-green-500 rounded-full"/>
+                            <div className="size-2 bg-green-500 rounded-full" />
                             <span>Connected</span>
                           </div>
                           <span>2min ago</span>
@@ -214,7 +215,7 @@ export default function Home() {
                       </ContextMenuSubContent>
                     </ContextMenuSub>
                   </ContextMenuContent>
-              </ContextMenu>
+                </ContextMenu>
               </TabsContent>
               <TabsContent value="active" className="m-0">
                 <div className="p-2">a list of ACTIVE connections here</div>

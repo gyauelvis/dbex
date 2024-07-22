@@ -2,9 +2,10 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { useEffect, useState } from "react"
 import React from "react";
+import { useState } from "react";
 import { BackgroundBeams } from "@/components/ui/background-beams";
+import { login } from "@/lib/actions";
 
 import {
     MailIcon as Mail,
@@ -28,7 +29,7 @@ import Link from "next/link"
 
 import { SignInWithGithub, SignInWithGoogle } from "@/components/auth/SignUpWIthGoogleAndGithub"
 // import { signUserIn } from "@/lib/actions"
-import { getCsrfToken } from "next-auth/react"
+// import { getCsrfToken } from "next-auth/react"
 
 
 
@@ -45,19 +46,6 @@ const signInFormSchema = z.object({
 type signInFormSchema = z.infer<typeof signInFormSchema>
 
 export default function SignInPage() {
-    const [csrfToken, setCsrfToken] = useState<string | null>(null)
-
-    useEffect(() => {
-        async function fetchCsrfToken() {
-            const token = await getCsrfToken();
-            console.log('Fetched CSRF token:', token);
-            setCsrfToken(token);
-        }
-
-        fetchCsrfToken();
-    }, []);
-
-
     const form = useForm<z.infer<typeof signInFormSchema>>({
         resolver: zodResolver(signInFormSchema),
         defaultValues: {
@@ -67,20 +55,9 @@ export default function SignInPage() {
     })
 
     const onSubmit = async (values: z.infer<typeof signInFormSchema>) => {
-        if (!csrfToken) {
-            console.error("CSRF token is not set. Form submission is blocked.");
-            return;
-        }
-
         console.log("Entered onSubmit");
         const { email, password } = values;
-        console.log("CSRF token before submission:", csrfToken);
-        // const result = await signUserIn({ email, password, csrfToken });
-        // if (result.success) {
-        //     router.push('/app/home');
-        //   } else {
-        //     console.error(result.error);
-        //   }
+        await login({email, password})
     };
 
     const [isPasswordShown, setIsPasswordShown] = useState(false);
@@ -145,7 +122,6 @@ export default function SignInPage() {
                                     </FormItem>
                                 )}
                             />
-                            <input name="csrfToken" type="hidden" defaultValue={csrfToken || ""} />
                             <Button type="submit" className="w-full dark:bg-secondary dark:hover:bg-secondary-foreground dark:text-secondary-foreground dark:hover:text-secondary rounded-lg">Submit</Button>
                             <div className="flex flex-row justify-center items-center">
                                 <div className="line w-1/2 h-[1.5px] rounded-full bg-foreground-50"></div>

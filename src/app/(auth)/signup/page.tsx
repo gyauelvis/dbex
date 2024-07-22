@@ -6,7 +6,7 @@ import { z } from "zod"
 import Link from "next/link";
 import { BackgroundBeams } from "@/components/ui/background-beams";
 import React, { useState } from 'react';
-
+import { signup } from "@/lib/actions";
 import {
     MailIcon as Mail,
     LockIcon as Lock,
@@ -56,9 +56,8 @@ export default function SignUpPage() {
     })
 
 
-    const onSubmit = async (values: z.infer<typeof signInFormSchema>) => {
-        // const registerNewUser = await registerUser(values.email, values.password);
-        console.log(values)
+    const onSubmit = async ({email, password}: z.infer<typeof signInFormSchema>) => {
+        await signup({email, password});
     }
 
     const [isPasswordShown, setIsPasswordShown] = useState(false);

@@ -24,10 +24,16 @@ import {
 } from '@/components/icons';
 
 import { ChartComponent } from '@/components/chart-list';
+import { createClient } from '../../../../utils/supabase/client';
 
 
-const Page = () => {
-  // const { data } = useSession()
+const Page = async() => {
+  const { data } = useSession()
+  const supabase = createClient()
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
 
   return (
     <ResizablePanel>
@@ -87,7 +93,7 @@ const Page = () => {
 
         <div className="w-full gap-5 relative grid grid-cols-12">
           
-          <Card className='shadow border grid col-span-5 lg:col-span-3 h-full bg-patternImag bg-bottom  rounded-lg py-4 px-5 relative'>
+          <Card className='shadow border grid col-span-5 lg:col-span-3 h-full dark:bg-custom-gradient bg-bottom  rounded-lg py-4 px-5 relative'>
             <div className="flex justify-between flex-col gap-3">
               <div className='flex gap-3 flex-col items-center justify-center'>
                 <div className="icon bg-secondary w-fit p-3 rounded-lg">
@@ -107,7 +113,7 @@ const Page = () => {
 
           <FeedbakCard></FeedbakCard>
 
-          <Card className='flex flex-row col-span-7 lg:col-span-5 gap-4 shadow border rounded-lg py-4 px-5 relative overflow-y-scroll'>
+          <Card className='flex flex-row col-span-7 lg:col-span-6 gap-4 shadow border rounded-lg py-4 px-5 relative overflow-y-scroll'>
             <div className="flex flex-col justify-between gap-3 w-full">
               <div className='flex gap-3 flex-col'>
                 <div className="icon bg-secondary w-fit p-3 rounded-lg">
@@ -118,7 +124,7 @@ const Page = () => {
                 </CardTitle>
               </div>
 
-              <div className='flex flex-col lg:h-[10rem] lg:overflow-y-scroll'>
+              <div className='flex flex-col gap-2 lg:h-[10rem] lg:overflow-y-scroll'>
                 <RecentQueries />
               </div>
             </div>
