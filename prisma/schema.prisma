@@ -7,8 +7,9 @@ datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
-  schemas   = ["public", "auth"]
+  schemas  = ["public", "auth"]
 }
+
 
 model User {
   id            String       @id @default(cuid())
@@ -91,3 +92,4 @@ model Query {
   @@map("queries")
   @@schema("public")
 }
+
